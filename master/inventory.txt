@@ -1,0 +1,2 @@
+worker1 ansible_host=192.168.90.2 ansible_connection=ssh ansible_user=root 
+worker2 ansible_host=192.168.90.3 ansible_connection=ssh ansible_user=root

@@ -1,0 +1,49 @@
+version: '2.2'
+services:
+  master:
+    build: .
+    image: ansibleplayground/ubuntu:latest
+    container_name: master
+    volumes:
+      - ./master:/root/work
+    extra_hosts:
+      - "master:192.168.90.1"
+      - "worker1:192.168.90.2"
+      - "worker2:192.168.90.3"
+    networks:
+      data_nw:
+        ipv4_address: "192.168.90.1"
+  worker1:
+    image: ansibleplayground/ubuntu:latest
+    container_name: worker1
+    volumes:
+      - ./worker1:/root/work
+    extra_hosts:
+      - "master:192.168.90.1"
+      - "worker1:192.168.90.2"
+      - "worker2:192.168.90.3"
+    networks:
+      data_nw:
+        ipv4_address: "192.168.90.2"
+  worker2:
+    image: ansibleplayground/ubuntu:latest
+    container_name: worker2
+    volumes:
+      - ./worker2:/root/work
+    extra_hosts:
+      - "master:192.168.90.1"
+      - "worker1:192.168.90.2"
+      - "worker2:192.168.90.3"
+    networks:
+      data_nw:
+        ipv4_address: "192.168.90.3"
+networks:
+  data_nw:
+     enable_ipv6: false
+     driver: bridge
+     ipam:
+        driver: default
+        config:
+          - subnet: "192.168.90.0/24"
+            gateway: "192.168.90.254"       
+

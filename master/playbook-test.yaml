@@ -1,0 +1,32 @@
+-    
+  name: Play book to test out commands on the workers
+  hosts: all
+  tasks:
+    - name: Execute command 'date'
+      command: date
+      register: date
+    - debug: var=date.stdout_lines
+
+    - name: Display resolv.conf contents
+      command: cat /etc/resolv.conf
+      register: resolv
+    - debug: var=resolv.stdout_lines
+
+    - name: Create a folder using file module
+      file: 
+         path=~/work/temp
+         state=directory
+      register: dir
+    - debug: var=dir.stdout_lines  
+
+    - name: Run a script on all remote machines
+      script: ./run_remotely.sh
+
+-
+  name: Check various services
+  hosts: all
+  tasks:
+    - name: Check if SSH service is running
+      service: name=ssh state=started
+      register: ssh
+    - debug: var=ssh.stdout_lines
